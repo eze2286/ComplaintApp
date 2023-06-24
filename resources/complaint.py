@@ -23,7 +23,7 @@ async def create_complaint(request: Request, complaint: ComplaintIn):
     return await ComplaintManager.create_complaint(complaint, user)
 
 @router.delete("/complaints/{complaint_id}", dependencies=[Depends(oauth2_scheme), Depends(is_admin)],
-                status_code=204)
+        status_code=204)
 async def delete_complaint(complaint_id:int):
     await ComplaintManager.delete(complaint_id)
 
