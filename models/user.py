@@ -19,4 +19,3 @@ user = sqlalchemy.Table(
     ),
     sqlalchemy.Column("iban", sqlalchemy.String(200)),
 )
-

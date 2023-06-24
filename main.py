@@ -6,8 +6,8 @@ from resources.routes import api_router
 import uvicorn
 
 origins = [
-"http://localhost",
-"http://localhost:4200",
+    "http://localhost",
+    "http://localhost:4200",
 ]
 
 app = FastAPI()
@@ -20,14 +20,17 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
 @app.on_event("startup")
 async def startup():
     return await database.connect()
+
 
 @app.on_event("shutdown")
 async def shutdown():
     return await database.disconnect()
 
+
 # For debugging with breakpoints in VS Code
-if __name__ == '__main__':
-    uvicorn.run(app, host='0.0.0.0', port=8000)
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=8000)
