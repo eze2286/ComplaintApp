@@ -1,6 +1,7 @@
 from db import database
 from models import complaint, RoleType, State
 
+
 class ComplaintManager:
     @staticmethod
     async def get_complaints(user):
@@ -10,25 +11,36 @@ class ComplaintManager:
         elif user["role"] == RoleType.approver:
             q = q.where(complaint.c.status == State.pending)
         return await database.fetch_all(q)
-    
+
     @staticmethod
     async def create_complaint(complaint_data, user):
         data = complaint_data.dict()
         data["complainer_id"] = user["id"]
         id_ = await database.execute(complaint.insert().values(**data))
+
         return await database.fetch_one(complaint.select().where(complaint.c.id == id_))
-    
+
     @staticmethod
     async def delete(complaint_id):
-        return await database.execute(complaint.delete().where(complaint.c.id == complaint_id))
+        return await database.execute(
+            complaint.delete().where(complaint.c.id == complaint_id)
+        )
 
     @staticmethod
     async def approve(id_):
-        await database.execute(complaint.update().where(complaint.c.id == id_).values(status=State.approved))
+        await database.execute(
+            complaint.update()
+            .where(complaint.c.id == id_)
+            .values(status=State.approved)
+        )
 
     @staticmethod
     async def reject(id_):
-        await database.execute(complaint.update().where(complaint.c.id == id_).values(status=State.rejected))
-    
-# print(RoleType.complainer.name)
+        await database.execute(
+            complaint.update()
+            .where(complaint.c.id == id_)
+            .values(status=State.rejected)
+        )
 
+
+# print(RoleType.complainer.name)
