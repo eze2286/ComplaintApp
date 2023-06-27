@@ -10,7 +10,7 @@ origins = [
     "http://localhost:4200",
 ]
 
-app = FastAPI()
+app = FastAPI(docs_url="/")
 app.include_router(api_router)
 app.add_middleware(
     CORSMiddleware,
